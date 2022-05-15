@@ -1,11 +1,6 @@
 <%- include('./partials/head'); %>
   <body>
-    <div class="menu">
-      <div class="menu-item"><a href="/inbox">Inbox</a></div>
-      <div class="menu-item"><a href="/users">Users</a></div>
-      <div class="menu-item"><a href="/">Login</a></div>
-    </div>
-
+	<%- include("./partials/menu"); %>
     <div id="login-container">
       <div id="left-column"></div>
       <div id="branding">
@@ -13,18 +8,58 @@
         <h1>Login - Chat Application</h1>
       </div>
       <div id="login-form">
-        <form method="post" action="/">
+        <form method="post" action="/" id="user-login-form">
           <input
             type="text"
             name="username"
             placeholder="enter mobile or email"
-            value=""
+            value="<%= data.username %>"
           />
-          <p class="error show">Error message here</p>
+		  
+		  <% if(errors.username) { %> 
+          <p class="error show"> <%= errors.username.msg %> </p>
+			<% } else { %>
+          <p class="error"></p>
+			<% } %>
+
           <input type="password" name="password" placeholder="enter password" />
+
+		  <% if(errors.password) { %> 
+          <p class="error show"> <%= errors.password.msg %> </p>
+			<% } else { %>
+          <p class="error"></p>
+			<% } %>
+	
+			<br/>
+		  <% if(errors.common) { %> 
+          <p class="error show"> <%= errors.common.msg %> </p>
+			<% } else { %>
+          <p class="error"></p>
+			<% } %>
+
           <input type="submit" value="Login" />
         </form>
       </div>
     </div>
   </body>
+  <script>
+	  const form = document.querySelector("#user-login-form");
+	//Removing ERROR indication 
+	//after start typing the field
+	//Added by MySelf !!! I'm so proud of me :D 
+  form.addEventListener("keydown",(e) => {
+	e.target.nextSibling.nextSibling.classList.remove("show");
+	e.target.nextSibling.nextSibling.style.display = "none"
+  });
+	//////////////////////////
+  </script>
+
+  <script> 
+	  <% if(errors.auth) { %>
+		const authErrorToast = Toastify({text:"<%= errors.auth.msg %>", duration: 5000});
+	  authErrorToast.showToast();
+	  <% } else { %>
+	  const authErrorToast = undefined;
+	  <% } %>
+  </script>
 </html>

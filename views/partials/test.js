@@ -70,3 +70,9 @@ async function deleteUSER(userId) {
     deleteERRORToast.showToast();
   }
 }
+
+/*
+ *		Decapricated
+		<% if (loggedInUser && loggedInUser._id) {  %>
+ 
+ */
