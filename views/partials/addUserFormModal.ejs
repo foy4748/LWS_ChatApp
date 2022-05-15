@@ -1,0 +1,138 @@
+<div class="modal-wrapper" id="add-user-modal">
+  <div class="modal">
+	<a href="#" onclick="closeModal()" class="modal-close">+</a>
+	<div class="modal-title">
+	  <h2>Create New User</h2>
+	</div>
+	<div class="modal-body">
+	  <form 
+		  method="post"
+		  action="/users"
+		  enctype="multipart/form-data"
+		  id="add-user-form"
+	  >
+		<input type="text" placeholder="enter name" name="name" />
+		<p class="error name-error">This is error</p>
+
+		<input type="text" placeholder="enter email" name="email" />
+		<p class="error email-error">This is error</p>
+
+		<input type="text" placeholder="enter mobile" name="mobile" />
+		<p class="error mobile-error">This is error</p>
+
+
+		<input
+		  type="password"
+		  placeholder="enter password"
+		  name="password"
+		/>
+		<p class="error password-error">This is error</p>
+
+		<input type="file" name="avatar" />
+		<p class="error avatar-error">This is error</p>
+
+		<br/>
+		<p class="error common-error">This is error</p>
+
+		<input type="submit" value="Submit"/>
+	  </form>
+	</div>
+  </div>
+</div>
+<script>
+  const modal = document.querySelector("#add-user-modal");
+  const form = document.querySelector("#add-user-form");
+
+  function closeModal() {
+	modal.style.display = "none";
+  }
+  function openModal() {
+	modal.style.display = "block";
+  }
+
+  const successToast = Toastify({text: "USER was Successfully added. Reloading the list...", duration: 1500,});
+const deleteToast = Toastify({
+  text: "USER was Successfully DELETED. Reloading the list...",
+  duration: 1500,
+});
+
+const deleteERRORToast = Toastify({
+  text: "Couldn't delete user!!",
+  duration: 4000,
+});
+
+	//Removing ERROR indication 
+	//after start typing the field
+	//Added by MySelf !!! I'm so proud of me :D 
+  form.addEventListener("keydown",(e) => {
+	e.target.classList.remove("error");
+	e.target.nextSibling.nextSibling.style.display = "none"
+  });
+	//////////////////////////
+
+  //Prepare the form data
+form.onsubmit = async function(e) {
+	e.preventDefault();
+	const formData = new FormData(form);
+
+	let response = await fetch("/users", {
+	method: "POST",
+	body: formData,
+			});
+	let result = await response.json();
+	
+	//Grabbing Error PlacHolders
+	const errorPlaceHolderS = document.querySelectorAll("p.error");
+	const inputErrorPlaceHolders = document.querySelectorAll("input.error");
+
+	//Clearing Error PlacHolders before submitting
+	errorPlaceHolderS.forEach((child) => {
+		child.style.display = "none";
+		});
+	inputErrorPlaceHolders.forEach((child) => {
+		child.classList.remove("error");
+			});
+
+
+	if (result.errors) {
+	  Object.keys(result.errors).forEach((fieldname) => {
+		form[fieldname].classList.add("error");
+
+		const errorPlaceHolder = document.querySelector(`.${fieldname}-error`);
+		errorPlaceHolder.textContent = result.errors[fieldname].msg;
+		errorPlaceHolder.style.display = "block";
+	  });
+	} else {
+	  successToast.showToast();
+	  closeModal();
+	  document.querySelector("p.error").style.display = "none";
+
+	  //Reloading the page after adding a user
+	  setTimeout(()=>{
+		location.reload()
+			  },1500);
+	}
+
+}
+
+ const deleteUSER = async (userId) => {
+  const response = await fetch(`/users/${userId}`, {
+    method: "DELETE",
+  });
+  const result = await response.json();
+
+  if (!result.error) {
+  console.log("HITT");
+    deleteToast.showToast();
+    //Reloading the page after deleting a user
+    setTimeout(() => {
+      location.reload();
+    }, 1500);
+  } else {
+    deleteERRORToast.showToast();
+  }
+}
+		
+
+</script>
+
