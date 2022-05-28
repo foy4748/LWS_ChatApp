@@ -6,18 +6,20 @@
 		  <div class="menu-item"><a href="/users">Users</a></div>
 		  <% } %>
 
-		  <div class="menu-item"><a href="/" id="LOGOUT">LogOut</a></div>
+		  <div class="menu-item">
+
+		    <% if (loggedInUser && loggedInUser.userAvatar) { %>
+			<img
+			  src="./uploads/avatar/<%= loggedInUser.userAvatar %>"
+			  alt="<%= loggedInUser.userName %>"
+			/>
+			<% } else { %>
+			<img src="./images/nophoto.png" alt="<%= loggedInUser.userName %>" />
+        <% } %><a href="/" onclick="()=>window.location = '/'" id="LOGOUT">LogOut</a>
+
+		  </div>
 		<% } else { %>
 		  <div class="menu-item"><a href="/">Login</a></div>
 		<% } %>
 
 	  </div>
-
-	<script>
-		const logout = document.querySelector("#LOGOUT");
-		logout.addEventListener("click", async ()=> {
-				console.log("HIT");
-				const res = await fetch("/", {method: "DELETE"});
-				console.log(res);
-				});
-	</script>

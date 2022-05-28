@@ -56,10 +56,11 @@
 
   <script> 
 	  <% if(errors.auth) { %>
-		const authErrorToast = Toastify({text:"<%= errors.auth.msg %>", duration: 5000});
+		const authErrorToast = Toastify({text:"<%= errors.auth.msg %>", duration: 3000});
 	  authErrorToast.showToast();
 	  <% } else { %>
 	  const authErrorToast = undefined;
 	  <% } %>
   </script>
+  <%- include('./partials/footer.ejs'); %>
 </html>

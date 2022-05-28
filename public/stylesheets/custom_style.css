@@ -1,0 +1,13 @@
+#search-container {
+	display: flex;
+	flex-flow: wrap column;
+	justify-content: center;
+	align-items: center;
+}
+#clear-search {
+	display: none;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	height: 1 em;
+}

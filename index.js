@@ -3,10 +3,18 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
+const http = require("http");
+const socket = require("socket.io");
+
+const app = express(); //Executing ExpressJS
+
+const server = http.createServer(app);
+const io = socket(server);
+
+global.io = io; //Storing the socket I\O inside the global variable
 
 dotenv.config(); //Accessing Environment Variables
 require("./dbConnect"); //Connecting DB
-const app = express(); //Executing ExpressJS
 
 //App Usage
 app.use(express.json());
@@ -39,6 +47,6 @@ app.use(notFoundErrorHandler);
 //Handling Common Errors
 app.use(errorHandler);
 
-app.listen(process.env.port, () =>
+server.listen(process.env.port, () =>
   console.log(`Server is listening to port ${process.env.port}`)
 );

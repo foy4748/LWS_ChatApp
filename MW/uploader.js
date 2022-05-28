@@ -2,7 +2,13 @@ const multer = require("multer");
 const path = require("path");
 const createError = require("http-errors");
 
-const uploader = (folder_name, allowed_types, size_limit, err_msg) => {
+const uploader = (
+  folder_name,
+  allowed_types,
+  size_limit,
+  file_limit,
+  err_msg
+) => {
   const UPLOAD_DIRECTORY = `${__dirname}/../public/uploads/${folder_name}`;
 
   const multerDiskStorageOptions = {
@@ -24,6 +30,9 @@ const uploader = (folder_name, allowed_types, size_limit, err_msg) => {
     storage,
     limits: { fileSize: size_limit },
     fileFilter: (req, file, cb) => {
+      if (req.files.length > file_limit) {
+        cb(createError("You can upload max 2 files"));
+      }
       if (allowed_types.includes(file.mimetype)) {
         cb(null, true);
       } else {

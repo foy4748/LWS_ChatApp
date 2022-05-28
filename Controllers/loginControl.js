@@ -31,6 +31,7 @@ wrapper.loginPostControl = async (req, res) => {
           mobile: user.mobile,
           email: user.email,
           userRole: user.role,
+          userAvatar: user.avatar,
         };
         const tokenOptions = {
           expiresIn: process.env.jwtExpirey,
@@ -46,12 +47,7 @@ wrapper.loginPostControl = async (req, res) => {
         });
 
         res.locals.loggedInUser = tokenData;
-        //Lesson Learned!!!
-        //Don't redirect!!! That's why the
-        //template engine is not getting res.locals!!
-        //res.redirect("/inbox");
-
-        res.render("inbox");
+        res.redirect("/inbox");
       } else {
         createError("Authentication Failed!");
 

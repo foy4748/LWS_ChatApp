@@ -1,0 +1,10 @@
+	<script>
+		const logout = document.querySelector("#LOGOUT");
+		if(logout) {
+
+		logout.addEventListener("click", async ()=> {
+				const res = await fetch("/", {method: "DELETE"});
+				});
+		}
+	</script>
+
