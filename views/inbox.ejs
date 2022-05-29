@@ -82,7 +82,6 @@
 
       // handle new/live incoming message from socket
       socket.on("new_message", data => {
-          form.reset(); // reset the form
 
         // only respond if current conversation is open in any client
         if(data.message.conversation_id == current_conversation_id) {
@@ -124,6 +123,20 @@
           document.querySelector('#chat-message-list > .message-row:first-child').insertAdjacentHTML('beforeBegin', messageHTML);
         }
       });
+	  
+	  socket.on("delete_conversation", data => {
+		//Reseting message form to prevent 
+		//sending message while deleting conversation
+		form.reset();
+
+		const deletingToast = Toastify({
+          text: data.message,
+          duration: 1000,
+        });
+		deletingToast.showToast();
+		location.reload();
+
+	  });
 
       // get messages of a conversation
       async function getMessages(conversation_id, current_conversation_name){
@@ -213,7 +226,6 @@
         // get response
         let result = await response.json();
 
-        form.reset(); // reset the form
         if (!result.errors) {
           form.reset(); // reset the form
         } else {

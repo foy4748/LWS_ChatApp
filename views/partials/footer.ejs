@@ -4,7 +4,18 @@
 
 		logout.addEventListener("click", async ()=> {
 				const res = await fetch("/", {method: "DELETE"});
-				});
+				const result = await res.json();
+				const {loggedOut} = result;
+				if(loggedOut)
+				{
+					const logOutToast = Toastify({
+					  text: "Logging Out...",
+					  duration: 1500,
+					});
+					await logOutToast.showToast();
+					window.location.href = "/";
+				}
+			});
 		}
 	</script>
 

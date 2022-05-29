@@ -131,7 +131,9 @@ wrapper.loginPostControl = async (req, res) => {
 //LOGOUT
 wrapper.loginDeleteControl = (req, res) => {
   res.clearCookie(process.env.cookieName);
-  res.redirect("/");
+  res.json({
+    loggedOut: true,
+  });
 };
 
 module.exports = wrapper;

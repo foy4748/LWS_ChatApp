@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const http = require("http");
 const socket = require("socket.io");
+const cors = require("cors");
 
 const app = express(); //Executing ExpressJS
 
@@ -21,6 +22,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public/")));
 app.use(cookieParser(process.env.cookieSecret));
+app.use(
+  cors({
+    origin: process.env.APP_URL,
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
 //App Settings
 app.set("view engine", "ejs");
@@ -47,6 +55,8 @@ app.use(notFoundErrorHandler);
 //Handling Common Errors
 app.use(errorHandler);
 
-server.listen(process.env.port, () =>
-  console.log(`Server is listening to port ${process.env.port}`)
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server is listening to port ${PORT}`)
 );

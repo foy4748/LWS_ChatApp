@@ -1,5 +1,4 @@
+.data
 node_modules
 environments.js
-.data
 .env
-public/uploads

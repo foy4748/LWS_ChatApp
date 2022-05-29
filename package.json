@@ -4,15 +4,14 @@
   "description": "Learning NodeJS and ExpressJS with Sumit vi. Thanks to Learn with Sumit",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon index.js",
-    "prod": "NODE_ENV=production node index",
-    "db": "mongod --dbpath=./.data"
+    "start": "NODE_ENV=production node index.js"
   },
   "author": "LWS",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.7",
     "express": "^4.18.1",

@@ -226,8 +226,18 @@ wrapper.inboxMessagePostControl = async (req, res) => {
     await MSG.create(dbPost);
 
     await global.io.emit("new_message", resObj);
+    res.json({
+      errors: false,
+    });
   } catch (err) {
-    res.status(500).end();
+    const response = {
+      errors: {
+        common: {
+          msg: "Failed to send message",
+        },
+      },
+    };
+    res.status(500).json(response);
   }
 };
 //____________________________________________________________________
@@ -263,6 +273,12 @@ wrapper.inboxConvDeleteControl = async (req, res) => {
     });
     //Deleting the conversation
     await CONV.deleteOne({ _id: escape(req.params.id) });
+
+    //Emiting socket response
+    const deleteRes = {
+      message: `${res.locals.loggedInUser.userName} is deleting this conversation... `,
+    };
+    await global.io.emit("delete_conversation", deleteRes);
 
     //Sending response if there is no error
     res
